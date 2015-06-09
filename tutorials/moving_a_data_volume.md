@@ -8,11 +8,11 @@ The container you move will be part of a two-container application, the other co
 You will be controlling your Flocker cluster via the CLI that has been pre-installed for you.
 The following diagram illustrates the initial server-side Flocker setup that you will control via the CLI:
 
-![initial setup](images/flocker-tutorial-initial-setup.svg "In the initial server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
+![initial setup](https://raw.githubusercontent.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-initial-setup.svg "In the initial server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
 
 The following diagram illustrates how the server-side Flocker setup will be configured at the end of the tutorial:
 
-![final setup](images/flocker-tutorial-final-setup.svg "Following the completion of this tutorial the server-side Flocker setup will be configured with the web application still running within a container on the first server, while the Redis server with a volume is running on the second server.")
+![final setup](https://raw.githubusercontent.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "Following the completion of this tutorial the server-side Flocker setup will be configured with the web application still running within a container on the first server, while the Redis server with a volume is running on the second server.")
 
 Flocker manages the data migration and the link between the two containers.
 
@@ -77,7 +77,7 @@ Migrating a Container to the Second Host
 
 The diagram below illustrates your current server-side Flocker setup:
 
-![initial setup](images/flocker-tutorial-initial-setup.svg "In the server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
+![initial setup](https://raw.githubusercontent.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-initial-setup.svg "In the server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
 
 To move the container with the Redis server along with its data volume, use the `deployment-node2.yml` file:
 
@@ -114,4 +114,4 @@ Using Flocker, you just moved a Docker container with its volume, while persisti
 
 The following diagram illustrates how your server-side Flocker setup looks now:
 
-![final setup](images/flocker-tutorial-final-setup.svg "The web application is still running within a container on the first server, while the Redis server with a volume is now running on the second server.")
+![final setup](https://raw.githubusercontent.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "The web application is still running within a container on the first server, while the Redis server with a volume is now running on the second server.")
