@@ -1,0 +1,37 @@
+ $ ssh root@104.130.196.79 (node2)
+
+ $ cd /root/flocker
+
+ $ flocker-deploy as-XXXXX-1 deploy.yml app.yml
+
+ $ curl --cacert $PWD/cluster.crt --cert $PWD/user.crt --key $PWD/user.key https://as-XXXXX-1:4523/v1/configuration/datasets
+curl: (51) SSL: no alternative certificate subject name matches target host name 'as-XXXXX-1'
+
+ $ curl --cacert $PWD/cluster.crt --cert $PWD/user.crt --key $PWD/user.key https://104.130.195.196:4523/v1/configuration/datasets
+curl: (51) SSL: certificate subject name 'control-service' does not match target host name '104.130.195.196'
+
+ $ echo "104.130.195.196 control-service" >> /etc/hosts
+
+ $ curl --cacert /root/flocker/cluster.crt --cert $PWD/user.crt --key $PWD/user.key https://control-service:4523/v1/configuration/datasets
+[]
+
+ $ flocker-deploy control-service deploy.yml app.yml
+The cluster configuration has been updated. It may take a short while for changes to take effect, in particular if Docker images need to be pulled.
+
+ $ curl --cacert $PWD/cluster.crt --cert $PWD/user.crt --key $PWD/user.key https://control-service:4523/v1/configuration/containers
+[{"image": "clusterhq/mongodb:latest", "node_uuid": "2016bf36-1b52-4c88-ad46-b130339f7c9e", "restart_policy": {"name": "never"}, "name": "mongodb-example"}]
+
+ $ docker ps -a
+no containers
+
+ $ ssh root@104.130.195.196 (node1)
+
+ $ docker ps -a
+no containers
+
+
+
+version: 1
+nodes:
+  "10.210.194.57": ["mongodb-example"]
+  "10.210.197.208": []

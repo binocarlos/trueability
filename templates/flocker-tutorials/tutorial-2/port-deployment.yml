@@ -1,0 +1,4 @@
+"version": 1
+"nodes":
+  "{{node1_public_ip}}": ["mongodb-port-example"]
+  "{{node2_public_ip}}": []
