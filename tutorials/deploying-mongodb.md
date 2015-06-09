@@ -116,3 +116,8 @@ You've also seen how Flocker can move an existing container between hosts.
 There's no way to interact with it apart from looking at the `docker ps` output yet.
 In the next section of the tutorial you'll see how to expose container services on the host's network interface.
 
+### Exposing Ports
+Each application running in a Docker container has its own isolated networking stack. To communicate with an application running inside the container we need to forward traffic from a network port in the node where the container is located to the appropriate port within the container. Flocker takes this one step further: an application is reachable on all nodes in the cluster, no matter where it is currently located.
+
+Let's start a MongoDB container that exposes the database to the external world.
+
