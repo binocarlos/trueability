@@ -62,7 +62,7 @@ The `deployment-node1.yml` file describes which containers to deploy, and where:
 Now you can use the Flocker CLI to deploy both your web application and server onto one of the Flocker nodes.
 
 ```bash
-root@clinode:~$ flocker-deploy control-service deployment-node1.yml docker-compose.yml
+$ flocker-deploy control-service deployment-node1.yml docker-compose.yml
 ```
 
 * Visit http://1.2.3.4/.
@@ -72,8 +72,7 @@ root@clinode:~$ flocker-deploy control-service deployment-node1.yml docker-compo
 
 **note** the IP addresses for your setup will be different than above - please change `1.2.3.4` and `5.6.7.8` to be what you have set it to in `deployment-node1.yml`
 
-Migrating a Container to the Second Host
-========================================
+### Migrating a Container to the Second Host
 
 The diagram below illustrates your current server-side Flocker setup:
 
@@ -107,11 +106,24 @@ The container on the Redis server and its volume have now both been moved to the
 
 **note** the IP addresses for your setup will be different than above - please change `1.2.3.4` and `5.6.7.8` to be what you have set it to in `deployment-node2.yml`
 
-Result
-======
+### Result
 
 Using Flocker, you just moved a Docker container with its volume, while persisting its link to a web app on another server.
 
 The following diagram illustrates how your server-side Flocker setup looks now:
 
 ![final setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "The web application is still running within a container on the first server, while the Redis server with a volume is now running on the second server.")
+
+### Cleanup
+
+Once you have run this tutorial - it can be useful to clean up the Flocker cluster so you can do other tutorials without the containers and data from this tutorial getting in the way.
+
+We have included a `deployment-reset.yml` file that you can use to remove the containers from the cluster.
+
+```bash
+$ flocker-deploy control-service deployment-reset.yml docker-compose.yml
+```
+
+You can also take steps to reset the cluster fully (including removing all data volumes etc).
+
+You can use [this guide](http://build.clusterhq.com/results/docs/master/build-7878/using/administering/cleanup.html) to do so.

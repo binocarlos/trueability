@@ -7,10 +7,10 @@ The `flocker-tutorials` folder contains 2 sub-folders, each one contains the fil
 
 The deployment files are templated using Mustache and expect 2 variables to be populated:
 
- * node1_public_ip
- * node2_public_ip
+ * node1_public_ip_address
+ * node2_public_ip_address
 
-The flocker-tutorials folder should be copied out to: '/flocker-tutorials'
+The `templates/flocker-tutorials` folder should be copied out to: '/flocker-tutorials'
 
 NOTE - for the mongodb tutorial - the user will need a Mongo client and this will need installing.
 

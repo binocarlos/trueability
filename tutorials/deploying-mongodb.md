@@ -316,3 +316,17 @@ The virtual machines you are running will be useful for testing Flocker and runn
 If you would like to shut them down temporarily you can run `vagrant halt` in the tutorial directory.
 You can then restart them by running `vagrant up`.
 If you would like to completely remove the virtual machines you can run `vagrant destroy`.
+
+### Cleanup
+
+Once you have run this tutorial - it can be useful to clean up the Flocker cluster so you can do other tutorials without the containers and data from this tutorial getting in the way.
+
+We have included a `deployment-reset.yml` file that you can use to remove the containers from the cluster.
+
+```bash
+$ flocker-deploy control-service deployment-reset.yml minimal-application.yml
+```
+
+You can also take steps to reset the cluster fully (including removing all data volumes etc).
+
+You can use [this guide](http://build.clusterhq.com/results/docs/master/build-7878/using/administering/cleanup.html) to do so.
