@@ -187,3 +187,132 @@ At this point you have successfully deployed a MongoDB server and communicated w
 You've also seen how external users don't need to worry about applications' location within the cluster.
 In the next section of the tutorial you'll learn how to ensure that the application's data moves along with it, the final step to running stateful applications on a cluster.
 
+### Data Volumes
+
+#### The Problem
+
+By default moving an application from one node to another does not move its data along with it.
+Before proceeding let's see in more detail what the problem is by continuing the :doc:`Exposing Ports <exposing-ports>` example.
+
+Recall that we inserted some data into the database.
+Next we'll use a new configuration file that moves the application to a different node.
+
+`port-deployment-moved.yml`
+```yaml
+"version": 1
+"nodes":
+  "1.2.3.4": []
+  "5.6.7.8": ["mongodb-port-example"]
+```
+
+```bash
+$ flocker-deploy control-service port-deployment-moved.yml port-application.yml
+$ ssh root@5.6.7.8 docker ps
+CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS         PORTS                  NAMES
+4d117c7e653e    clusterhq/mongodb:latest     mongod     2 seconds ago   Up 1 seconds   27017/tcp, 28017/tcp   mongodb-port-example
+$
+```
+
+If we query the database the records we've previously inserted have disappeared!
+The application has moved but the data has been left behind.
+
+```bash
+$ mongo 5.6.7.8
+MongoDB shell version: 2.4.9
+connecting to: 5.6.7.8/test
+> use example;
+switched to db example
+> db.records.find({})
+>
+```
+
+#### The Solution
+
+Unlike many other Docker frameworks Flocker has a solution for this problem, a ZFS-based volume manager.
+An application with a Flocker volume configured will move the data along with the application, transparently and with no additional intervention on your part.
+
+We'll create a new configuration for the cluster, this time adding a volume to the MongoDB container.
+
+`volume-application.yml`
+```yaml
+"version": 1
+"applications":
+  "mongodb-volume-example":
+    "image": "clusterhq/mongodb"
+    "ports":
+    - "internal": 27017
+      "external": 27017
+    "volume":
+      # The location within the container where the data volume will be
+      # mounted:
+      "mountpoint": "/data/db"
+```
+
+`volume-deployment.yml`
+```bash
+"version": 1
+"nodes":
+  "1.2.3.4": ["mongodb-volume-example"]
+  "5.6.7.8": []
+```
+
+Then we'll run these configuration files with `flocker-deploy`:
+
+```bash
+$ flocker-deploy control-service volume-deployment.yml volume-application.yml
+$ ssh root@1.2.3.4 docker ps
+CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS         PORTS                  NAMES
+4d117c7e653e    clusterhq/mongodb:latest    mongod     2 seconds ago   Up 1 seconds   27017/tcp, 28017/tcp   mongodb-volume-example
+$
+```
+
+Once again we'll insert some data into the database:
+
+```bash
+$ mongo 1.2.3.4
+MongoDB shell version: 2.4.9
+connecting to: 1.2.3.4/test
+> use example;
+switched to db example
+> db.records.insert({"the data": "it moves"})
+> db.records.find({})
+{ "_id" : ObjectId("53d80b08a3ad4df94a2a72d6"), "the data" : "it moves" }
+```
+
+Next we'll move the application to the other node.
+
+`volume-deployment-moved.yml`
+"version": 1
+"nodes":
+  "1.2.3.4": []
+  "5.6.7.8": ["mongodb-volume-example"]
+```
+
+```bash
+$ flocker-deploy control-service volume-deployment-moved.yml volume-application.yml
+$ ssh root@5.6.7.8 docker ps
+CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS         PORTS                  NAMES
+4d117c7e653e    clusterhq/mongodb:latest    mongod     2 seconds ago   Up 1 seconds   27017/tcp, 28017/tcp   mongodb-volume-example
+$
+```
+
+This time however the data has moved with the application:
+
+```bash
+alice@mercury:~/flocker-tutorial$ mongo 5.6.7.8
+MongoDB shell version: 2.4.9
+connecting to: 5.6.7.8/test
+> use example;
+switched to db example
+> db.records.find({})
+{ "_id" : ObjectId("53d80b08a3ad4df94a2a72d6"), "the data" : "it moves" }
+```
+
+At this point you have successfully deployed a MongoDB server and communicated with it.
+You've also seen how Flocker allows you to move an application's data to different locations in a cluster as the application is moved.
+You now know how to run stateful applications in a Docker cluster using Flocker.
+
+The virtual machines you are running will be useful for testing Flocker and running other examples in the documentation.
+If you would like to shut them down temporarily you can run `vagrant halt` in the tutorial directory.
+You can then restart them by running `vagrant up`.
+If you would like to completely remove the virtual machines you can run `vagrant destroy`.
