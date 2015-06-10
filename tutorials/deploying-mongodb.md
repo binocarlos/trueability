@@ -110,7 +110,6 @@ Run `flocker-deploy` again to enact the change:
 
 ```bash
 $ flocker-deploy control-service minimal-deployment-moved.yml minimal-application.yml
-$
 ```
 
 If we do `docker ps` on node `1.2.3.4` we will see that no containers are running in this host anymore.  Run:
