@@ -121,3 +121,69 @@ Each application running in a Docker container has its own isolated networking s
 
 Let's start a MongoDB container that exposes the database to the external world.
 
+`port-application.yml`
+```yaml
+"version": 1
+"applications":
+  "mongodb-port-example":
+    "image": "clusterhq/mongodb"
+    "ports":
+    - "internal": 27017
+      "external": 27017
+```
+
+`port-deployment.yml`
+```yaml
+"version": 1
+"nodes":
+  "1.2.3.4": ["mongodb-port-example"]
+  "5.6.7.8": []
+```
+
+We will once again run these configuration files with `flocker-deploy`:
+
+```bash
+$ flocker-deploy control-service port-deployment.yml port-application.yml
+$ ssh root@1.2.3.4 docker ps
+CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS         PORTS                  NAMES
+4d117c7e653e    clusterhq/mongodb:latest    mongod     2 seconds ago   Up 1 seconds   27017/tcp, 28017/tcp   mongodb-port-example
+$
+```
+
+This time we can communicate with the MongoDB application by connecting to the node where it is running.
+Using the `mongo` command line tool we will insert an item into a database and check that it can be found.
+You should try to follow along and do these database inserts as well.
+
+> To keep your download for the tutorial as speedy as possible, we've bundled the latest development release of MongoDB in to a micro-sized Docker image. *You should not use this image for production.*
+
+If you get a connection refused error try again after a few seconds; the application might take some time to fully start up.
+
+```bash
+$ mongo 1.2.3.4
+MongoDB shell version: 2.4.9
+connecting to: 172.16.255.250/test
+> use example;
+switched to db example
+> db.records.insert({"flocker": "tested"})
+> db.records.find({})
+{ "_id" : ObjectId("53c958e8e571d2046d9b9df9"), "flocker" : "tested" }
+```
+
+We can also connect to the other node where it isn't running and the traffic will get routed to the correct node:
+
+```bash
+alice@mercury:~/flocker-tutorial$ mongo 5.6.7.8
+MongoDB shell version: 2.4.9
+connecting to: 5.6.7.8/test
+> use example;
+switched to db example
+> db.records.find({})
+{ "_id" : ObjectId("53c958e8e571d2046d9b9df9"), "flocker" : "tested" }
+```
+
+Since the application is transparently accessible from both nodes you can configure a DNS record that points at both IPs and access the application regardless of its location.
+
+At this point you have successfully deployed a MongoDB server and communicated with it.
+You've also seen how external users don't need to worry about applications' location within the cluster.
+In the next section of the tutorial you'll learn how to ensure that the application's data moves along with it, the final step to running stateful applications on a cluster.
+

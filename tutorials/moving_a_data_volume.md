@@ -31,7 +31,7 @@ $ cd /flocker-tutorials/tutorial-1
 The first step is to create two Docker containers on one of the hosts.
 One container has a Python web application and the other has a Redis server, which stores its data on a volume.
 
-The `fig.yml` file describes your distributed application:
+The `docker-compose.yml` file describes your distributed application:
 
 ```yaml
 web:
@@ -62,7 +62,7 @@ The `deployment-node1.yml` file describes which containers to deploy, and where:
 Now you can use the Flocker CLI to deploy both your web application and server onto one of the Flocker nodes.
 
 ```bash
-root@clinode:~$ flocker-deploy control-service deployment-node1.yml fig.yml
+root@clinode:~$ flocker-deploy control-service deployment-node1.yml docker-compose.yml
 ```
 
 * Visit http://1.2.3.4/.
@@ -95,7 +95,7 @@ To move the container with the Redis server along with its data volume, use the 
 Now you can use the Flocker CLI to migrate one of the containers to the second host:
 
 ```bash
-root@clinode:~$ flocker-deploy control-service deployment-node2.yml fig.yml
+root@clinode:~$ flocker-deploy control-service deployment-node2.yml docker-compose.yml
 ```
 
 The container on the Redis server and its volume have now both been moved to the second host, and Flocker has maintained its link to the web application on the first host:
