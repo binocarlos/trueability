@@ -127,9 +127,7 @@ The container on the Redis server and its volume have now both been moved to the
 Using Flocker, you just moved a Docker container with its volume, while persisting its link to a web app on another server.
 
 The following diagram illustrates how your server-side Flocker setup looks now:
-
 ![final setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "The web application is still running within a container on the first server, while the Redis server with a volume is now running on the second server.")
-
 ##Next steps
 The Tutorial above demonstrated the most basic features of Flocker.  If you want to learn more about how Flocker works, follow along with an In-depth Tutorial [link] in your live demo environment or try deploying and migrating your own Dockerized application.  If you want to install Flocker in your own environment, follow along with our Installation guide [link].
 
