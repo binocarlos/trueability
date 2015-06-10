@@ -1,12 +1,36 @@
-# Tutorial: Moving a Data Volume
+# Tutorial (simple)
 
-> **note** This tutorial takes roughly 10 minutes
+**This tutorial takes roughly 10 minutes**
+
+Flocker is an open-source data volume manager for your Dockerized application. 
+It gives ops teams the tools they need to run containerzied stateful services like databases in production.
+
+Unlike a Docker data volume which is tied to a single server, a Flocker data volume, called dataset, is portable. and can be used with any container, no matter where that container is running in your Flocker cluster.
+
+When you use the Flocker API or CLI to manage your stateful microservice, your volumes will follow your containers when they move between different hosts in your cluster.  
+
+Being able to move a container and its data volume together between hosts is useful if you ever need to migrate your database to a more powerful host, relocate an application after server failure or migrate between environments. 
+
+This Tutorial will introduce you to the basic concepts of Flocker.
+You will learn:
+
+* How to control your Flocker cluster using the Flocker CLI
+* How Flocker uses simple Deployment and Application YML files to define and deploy stateful applications
+* How to move containers and their data between hosts as a single unit
 
 You will use Flocker to migrate a Docker container with its data volume from one host to another.
 The container you move will be part of a two-container application, the other container will not move and the two will remain connected even when they are on different hosts.
 
-You will be controlling your Flocker cluster via the CLI that has been pre-installed for you.
-The following diagram illustrates the initial server-side Flocker setup that you will control via the CLI:
+## Before You Begin
+A 3-node Flocker cluster has been provisioned & configured for you in a hosted environment so that you can try Flocker without having to do any setup work.
+
+You will be controlling your Flocker cluster via the CLI that has been pre-installed for you. We have also pre-installed some files on the node running the CLI for use throughout the Tutorial.  In order to access these files, make sure your command line is in the proper directory:
+
+```bash
+$ cd /flocker-tutorials/tutorial-1
+```
+
+##
 
 ![initial setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-initial-setup.svg "In the initial server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
 
@@ -14,18 +38,17 @@ The following diagram illustrates how the server-side Flocker setup will be conf
 
 ![final setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "Following the completion of this tutorial the server-side Flocker setup will be configured with the web application still running within a container on the first server, while the Redis server with a volume is running on the second server.")
 
+
+We have uploaded the templates used in this tutorial into the `/flocker-tutorials/tutorial-1` folder.  The first step is to change directory into this folder:
+
+
+
+
 Flocker manages the data migration and the link between the two containers.
 
 If you have any feedback or problems, you can [talk to us](https://clusterhq.com/about/)
 
-## Before You Begin
-A 3 node Flocker cluster has been provisioned for you.  Before you begin the tutorial, ensure that you have a command line on the Flocker CLI.
-
-We have uploaded the templates used in this tutorial into the `/flocker-tutorials/tutorial-1` folder.  The first step is to change directory into this folder:
-
-```bash
-$ cd /flocker-tutorials/tutorial-1
-```
+Let's get started!
 
 ### Deploying an Application on the First Host
 The first step is to create two Docker containers on one of the hosts.
