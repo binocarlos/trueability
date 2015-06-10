@@ -40,7 +40,6 @@ This Tutorial will use a simple two-container application.  One container has a 
 The following diagram illustrates how the server-side Flocker setup will be configured at the end of the tutorial:
 
 ![final setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "Following the completion of this tutorial the server-side Flocker setup will be configured with the web application still running within a container on the first server, while the Redis server with a volume is running on the second server.")
-
 Let's get started!
 
 ### Deploying an Application on the First Host
@@ -92,7 +91,6 @@ By running
 ```bash
 root@clinode:~$ flocker-deploy control-service deployment-node1.yml docker-compose.yml
 ```
-
 we've taken the application described in our Application file and Deployed it to the hosts in our Deployment file.
 
 Now let's check if our application is available on the hosts that we've deployed it to.
@@ -102,17 +100,14 @@ Now let's check if our application is available on the hosts that we've deployed
 * Visit http://5.6.7.8/.
   You will also see that the count persists because Flocker routes the traffic from either node named in the deployment file to the one that has the application.  This makes it possible to move your containers and their volumes around the cluster without having to update any DNS or application settings.
 
-
 ##Migrating a Container to the Second Host
 
 The diagram below illustrates your current server-side Flocker setup after running `flocker-deploy`:
 
 ![initial setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-initial-setup.svg "In the server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
-
 Now, let's move the Redis container and its data volume to the other cluster node.
 
 To do this, we'll simply update the Deployment file to put the Redis container on node `5.6.7.8`
-
 
 ```yaml
 "version": 1
@@ -124,7 +119,7 @@ To do this, we'll simply update the Deployment file to put the Redis container o
 and rerun `flocker-deploy`the `deployment-node2.yml` file:
 
 ```bash
-root@clinode:~$ flocker-deploy control-service deployment-node2.yml fig.yml
+root@clinode:~$ flocker-deploy control-service deployment-node2.yml docker-compose.yml
 ```
 
 The container on the Redis server and its volume have now both been moved to the second host, and Flocker has maintained its link to the web application on the first host:
@@ -134,11 +129,16 @@ The container on the Redis server and its volume have now both been moved to the
 * Visit http://5.6.7.8/.
   You will see that the count still persists, even though the container with the volume has moved between hosts.
 
-Result
-======
-
+##Result
 Using Flocker, you just moved a Docker container with its volume, while persisting its link to a web app on another server.
 
 The following diagram illustrates how your server-side Flocker setup looks now:
 
 ![final setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "The web application is still running within a container on the first server, while the Redis server with a volume is now running on the second server.")
+
+##Next steps
+The Tutorial above demonstrated the most basic features of Flocker.  If you want to learn more about how Flocker works, follow along with an In-depth Tutorial in your live demo environment or try deploying and migrating your own Dockerized application.  If you've seen enough and want to install Flocker in your own environment, follow along with our Installation guide [link].
+
+To clear your hosts of the containers and volumes we've used in this Tutorial:
+
+[insert steps]
