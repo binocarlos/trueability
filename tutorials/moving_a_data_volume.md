@@ -1,17 +1,17 @@
-# Flocker Tutorial (simple)
+# Flocker tutorial (simple)
 
 **This tutorial takes roughly 15 minutes**
 
 Flocker is an open-source Container Data Volume Manager for your Dockerized application. 
-It gives ops teams the tools they need to run containerzied stateful services like databases in production.
+It gives ops teams the tools they need to run containerized stateful services like databases in production.
 
-Unlike a Docker data volume which is tied to a single server, a Flocker data volume, called dataset, is portable and can be used with any container, no matter where that container is running in your Flocker cluster.
+Unlike a Docker data volume which is tied to a single server, a Flocker data volume, called a dataset, is portable and can be used with any container, no matter where that container is running in your Flocker cluster.
 
 When you use the Flocker API or CLI to manage your stateful microservice, your volumes will follow your containers when they move between different hosts in your cluster.  
 
 Being able to move a container and its data volume together between hosts is useful if you ever need to migrate your database to a more powerful host, relocate an application after server failure or migrate between environments. 
 
-This Tutorial will introduce you to the basic concepts of Flocker.
+This tutorial will introduce you to the basic concepts of Flocker.
 You will learn:
 
 * How to control your Flocker cluster using the Flocker CLI
@@ -19,9 +19,9 @@ You will learn:
 * How to move containers and their data between hosts as a single unit
 
 ## Before You Begin
-A 3-node Flocker cluster has been provisioned & configured for you in a hosted environment so that you can try Flocker without having to do any setup work.
+A 3-node Flocker cluster has been provisioned and configured for you in a hosted environment so that you can try Flocker without having to do any setup work.
 
-You will be controlling your Flocker cluster via the CLI that has been pre-installed for you. We have also pre-installed some files on the node running the CLI for use throughout the Tutorial.  In order to access these files, make sure your command line is in the proper directory.  To access this directory, run:
+You will be controlling your Flocker cluster via the CLI that has been preinstalled for you. We have also pre-installed some files on the node running the CLI for use throughout the tutorial.  In order to access these files, make sure your command line is in the proper directory.  To access this directory, run:
 
 ```bash
 $ cd /flocker-tutorials/tutorial-1
@@ -29,7 +29,7 @@ $ cd /flocker-tutorials/tutorial-1
 
 ## Details of your sample application
 
-This Tutorial will use a simple two-container application to demonstrate the basic features of Flocker.  One container has a Python web application and the other has a Redis server, which stores its data on a volume.  Each time the Python web application serves a request, a counter is incremented and the number of visits is stored in Redis.  You will use Flocker to migrate the Redis container with its data volume from one host to another.  If this migration is successful, you will see the correct visit count in the Redis database.
+This tutorial will use a simple two-container application to demonstrate the basic features of Flocker.  One container has a Python web application and the other has a Redis server, which stores its data on a volume.  Each time the Python web application serves a request, a counter is incremented and the number of visits is stored in Redis.  You will use Flocker to migrate the Redis container with its data volume from one host to another.  If this migration is successful, you will see the correct visit count in the Redis database.
 
 ![initial setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-initial-setup.svg "In the initial server-side Flocker setup there are two servers, one of which has two Docker containers running; one container is a running a web application, the other has a Redis database with a volume.")
 The following diagram illustrates how the server-side Flocker setup will be configured at the end of the tutorial:
@@ -129,8 +129,8 @@ Using Flocker, you just moved a Docker container with its volume, while persisti
 The following diagram illustrates how your server-side Flocker setup looks now:
 ![final setup](https://rawgithub.com/binocarlos/trueability/master/tutorials/images/flocker-tutorial-final-setup.svg "The web application is still running within a container on the first server, while the Redis server with a volume is now running on the second server.")
 ##Next steps
-The Tutorial above demonstrated the most basic features of Flocker.  If you want to learn more about how Flocker works, follow along with an In-depth Tutorial [link] in your live demo environment or try deploying and migrating your own Dockerized application.  If you want to install Flocker in your own environment, follow along with our Installation guide [link].
+The tutorial above demonstrated the most basic features of Flocker.  If you want to learn more about how Flocker works, follow along with an In-depth tutorial [link] in your live demo environment or try deploying and migrating your own Dockerized application.  If you want to install Flocker in your own environment, follow along with our Installation guide [link].
 
-Before trying our another Tutorial in your demo environement, you will most likely want to clear your hosts of the containers and volumes we've used in this Tutorial.  To clean up your cluster:
+Before trying out another tutorial in your demo environement, you will most likely want to clear your hosts of the containers and volumes we've used in this tutorial.  To clean up your cluster:
 
 [insert steps]
