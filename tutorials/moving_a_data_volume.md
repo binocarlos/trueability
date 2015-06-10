@@ -133,7 +133,6 @@ The following diagram illustrates how your server-side Flocker setup looks now:
 The tutorial above demonstrated the most basic features of Flocker.  If you want to learn more about how Flocker works, follow along with an In-depth tutorial [link] in your live demo environment or try deploying and migrating your own Dockerized application.  If you want to install Flocker in your own environment, follow along with our Installation guide [link].
 
 ## Cleanup
-
 Once you have run this tutorial - it can be useful to clean up the Flocker cluster so you can do other tutorials without the containers and data from this tutorial getting in the way.
 
 We have included a `deployment-reset.yml` file that you can use to remove the containers from the cluster.
@@ -145,3 +144,5 @@ $ flocker-deploy control-service deployment-reset.yml docker-compose.yml
 You can also take steps to reset the cluster fully (including removing all data volumes etc).
 
 You can use [this guide](http://build.clusterhq.com/results/docs/master/build-7878/using/administering/cleanup.html) to do so.
+
+If you have any feedback or problems, you can [talk to us](https://clusterhq.com/contact/)

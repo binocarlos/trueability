@@ -19,7 +19,7 @@ Any application you can deploy into Docker you can manage with Flocker.
 ## Before You Begin
 A 3-node Flocker cluster has been provisioned and configured for you in a hosted environment so that you can try Flocker without having to do any setup work.
 
-You will be controlling your Flocker cluster via the CLI that has been preinstalled for you. We have also pre-installed some files on the node running the CLI for use throughout the tutorial. In order to access these files, make sure your command line is in the proper directory. To access this directory, run:
+You will be controlling your Flocker cluster via the CLI that has been pre-installed for you. We have also pre-installed some files on the node running the CLI for use throughout the tutorial. In order to access these files, make sure your command line is in the proper directory. To access this directory, run:
 
 ```bash
 $ cd /flocker-tutorials/tutorial-2
@@ -46,7 +46,7 @@ Deployment configuration: `minimal-deployment.yml`
 
 Notice that in the Deployment configuration file, we mention that the second node that has no applications deployed on it to ensure that `flocker-deploy` knows that it exists.
 If we don't do this, certain actions that might need to be taken on that node in the future will not happen, e.g. stopping currently running applications.
-It is thus important to list all of the nodes in your Flocker cluster in the Deployment file, even if you do not want to use them currently.
+It is therefore important to list all of the nodes in your Flocker cluster in the Deployment file, even if you do not want to use them currently.
 
 At this point, we haven't done anything yet.  Take a look at what containers Docker is running on node 1 by running:
 
@@ -140,7 +140,7 @@ CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS   
 $
 ```
 
-At this point you have successfully deployed a MongoDB server in a container on your VM.
+At this point you have successfully deployed a MongoDB server in a container.
 You've also seen how Flocker can move an existing container between hosts.
 There's no way to interact with it apart from looking at the `docker ps` output yet.
 In the next section of the tutorial you'll see how to expose container services on the host's network interface.
@@ -193,7 +193,7 @@ $
 ```
 
 This time we can communicate with the MongoDB application by connecting to the node where it is running.
-Using the `mongo` command line tool which has been preinstalled in this live demo environment, we will insert an item into a database and check that it can be found.
+Using the `mongo` command line tool which has been pre-installed in this live demo environment, we will insert an item into a database and check that it can be found.
 If you get a connection refused error try again after a few seconds; the application might take some time to fully start up.
 
 > To keep your download for the tutorial as speedy as possible, we've bundled the latest development release of MongoDB in to a micro-sized Docker image. *You should not use this image for production.*
@@ -390,8 +390,9 @@ You've also seen how Flocker allows you to move an application's data to differe
 You now know how to run stateful applications in a Docker cluster using Flocker.
 
 ### Next steps
-The tutorial above demonstrated some more features of Flocker.  You have root access to this live demo environment.  Why don't you try deploying your own stateful application. If you want to install Flocker in your own environment, follow along with our Installation guide [link].
+The tutorial above demonstrated some more features of Flocker.  You have root access to this live demo environment.  Why don't you try deploying your own stateful application? If you want to install Flocker in your own environment, follow along with our Installation guide [link].
 
+## Cleanup
 Once you have run this tutorial - it can be useful to clean up the Flocker cluster so you can do other tutorials without the containers and data from this tutorial getting in the way.
 
 We have included a `deployment-reset.yml` file that you can use to remove the containers from the cluster.
