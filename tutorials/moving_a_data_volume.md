@@ -24,7 +24,7 @@ A 3-node Flocker cluster has been provisioned and configured for you in a hosted
 You will be controlling your Flocker cluster via the CLI that has been pre-installed for you. We have also pre-installed some files on the node running the CLI for use throughout the tutorial.  In order to access these files, make sure your command line is in the proper directory.  To access this directory, run:
 
 ```bash
-$ cd /flocker-tutorials/tutorial-1
+$ cd /root/flocker-tutorials/tutorial-1
 ```
 
 ## Details of your sample application
@@ -90,9 +90,9 @@ we've taken the application described in our Application file and Ddployed it to
 
 Now let's check if our application is available on the hosts that we've deployed it to.
 
-* Visit http://1.2.3.4/.
+* Visit [http://1.2.3.4/](http://1.2.3.4/).
   You will see the visit count displayed.
-* Visit http://5.6.7.8/.
+* Visit [http://5.6.7.8/](http://5.6.7.8/).
   You will also see that the count persists because Flocker routes the traffic from either node named in the Deployment file to the one that has the application.  This makes it possible to move your containers and their volumes around the cluster without having to update any DNS or application settings.
 
 ## Migrating a Container to the Second Host
@@ -118,9 +118,9 @@ root@clinode:~$ flocker-deploy control-service deployment-node2.yml docker-compo
 
 The container on the Redis server and its volume have now both been moved to the second host, and Flocker has maintained its link to the web application on the first host:
 
-* Visit http://1.2.3.4/.
+* Visit [http://1.2.3.4/](http://1.2.3.4/).
   You will see the visit count is still persisted on this node even though the application is no longer running on that host
-* Visit http://5.6.7.8/.
+* Visit [http://5.6.7.8/](http://5.6.7.8/).
   You will see that the count still persists, even though the container with the volume has moved between hosts.
 
 ## Result
