@@ -22,7 +22,7 @@ A 3-node Flocker cluster has been provisioned and configured for you in a hosted
 You will be controlling your Flocker cluster via the CLI that has been pre-installed for you. We have also pre-installed some files on the node running the CLI for use throughout the tutorial. In order to access these files, make sure your command line is in the proper directory. To access this directory, run:
 
 ```bash
-$ cd /flocker-tutorials/tutorial-2
+$ cd /root/flocker-tutorials/tutorial-2
 ```
 
 ### Deploying an Application
@@ -198,6 +198,8 @@ If you get a connection refused error try again after a few seconds; the applica
 
 > To keep your download for the tutorial as speedy as possible, we've bundled the latest development release of MongoDB in to a micro-sized Docker image. *You should not use this image for production.*
 
+We will now insert some data into our database.  Run:
+
 ```bash
 $ mongo 1.2.3.4
 MongoDB shell version: 2.4.9
@@ -206,19 +208,33 @@ connecting to: 172.16.255.250/test
 switched to db example
 > db.records.insert({"flocker": "tested"})
 > db.records.find({})
-{ "_id" : ObjectId("53c958e8e571d2046d9b9df9"), "flocker" : "tested" }
 ```
 
-We can also connect to the other node where it isn't running and the traffic will get routed to the correct node:
+We then inspect the database to see that our data was actually inserted.  Run:
 
 ```bash
-alice@mercury:~/flocker-tutorial$ mongo 5.6.7.8
+> db.records.find({})
+{ "_id" : ObjectId("53c958e8e571d2046d9b9df9"), "flocker" : "tested" }
+> exit
+```
+
+We can also connect to the other node where it isn't running and the traffic will get routed to the correct node.  Run:
+
+```bash
+$ mongo 5.6.7.8
 MongoDB shell version: 2.4.9
 connecting to: 5.6.7.8/test
 > use example;
 switched to db example
 > db.records.find({})
+```
+
+We then inspect the output to see if our data is there:
+
+```bash
+> db.records.find({})
 { "_id" : ObjectId("53c958e8e571d2046d9b9df9"), "flocker" : "tested" }
+> exit
 ```
 
 Since the application is transparently accessible from both nodes you can configure a DNS record that points at both IPs and access the application regardless of its location.
@@ -269,6 +285,8 @@ $
 If we query the database the records we've previously inserted have disappeared!
 The application has moved but the data has been left behind.
 
+Run:
+
 ```bash
 $ mongo 5.6.7.8
 MongoDB shell version: 2.4.9
@@ -276,7 +294,14 @@ connecting to: 5.6.7.8/test
 > use example;
 switched to db example
 > db.records.find({})
+```
+
+We then inspect the data that was returned:
+
+```bash
+> db.records.find({})
 >
+> exit
 ```
 
 #### The Solution
@@ -330,7 +355,7 @@ CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS   
 $
 ```
 
-Once again we'll insert some data into the database:
+Once again we'll insert some data into the database.  Run:
 
 ```bash
 $ mongo 1.2.3.4
@@ -340,7 +365,14 @@ connecting to: 1.2.3.4/test
 switched to db example
 > db.records.insert({"the data": "it moves"})
 > db.records.find({})
+```
+
+And again we inspect the database to see that our data was actually inserted:
+
+```bash
+> db.records.find({})
 { "_id" : ObjectId("53d80b08a3ad4df94a2a72d6"), "the data" : "it moves" }
+> exit
 ```
 
 Next we'll move the application to the other node. 
@@ -373,16 +405,23 @@ CONTAINER ID    IMAGE                       COMMAND    CREATED         STATUS   
 $
 ```
 
-This time however, because we've specified a volume mountpoint in the Application configuration file, the data has moved with the application:
+This time however, because we've specified a volume mountpoint in the Application configuration file, the data has moved with the application.  Run:
 
 ```bash
-alice@mercury:~/flocker-tutorial$ mongo 5.6.7.8
+$ mongo 5.6.7.8
 MongoDB shell version: 2.4.9
 connecting to: 5.6.7.8/test
 > use example;
 switched to db example
 > db.records.find({})
+```
+
+And inspect the database to see if our data is there:
+
+```bash
+> db.records.find({})
 { "_id" : ObjectId("53d80b08a3ad4df94a2a72d6"), "the data" : "it moves" }
+> exit
 ```
 
 At this point you have successfully deployed a MongoDB server and communicated with it.
